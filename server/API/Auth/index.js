@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 const Router = express.Router();
 
 //Models
-import { UserModel } from "../../database/user/index";
+import { UserModel } from "../../database/allModels";
 
 /*
 Route           /signup

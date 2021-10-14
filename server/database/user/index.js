@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const UserSchema = mongoose.Schema({
     fullname: {
@@ -20,7 +21,14 @@ const UserSchema = mongoose.Schema({
     timestamps: true
 });
 
-UserSchema.statics.findEmailAndPhone = async (email, phoneNumber) => {
+// for creating the jwt tokens
+UserSchema.methods.generateJwtTokens = function() {
+    return jwt.sign({user: this._id.toString()},"ZummyApp");
+    //return jwt.sign({user: {email,fullname}},"ZummyApp");
+};
+
+// finding the does the user exist already or not
+UserSchema.statics.findEmailAndPhone = async ({email, phoneNumber}) => {
     // check whether the email exists
     const checkUserByEmail = await UserModel.findOne({email: email});
 
@@ -32,8 +40,9 @@ UserSchema.statics.findEmailAndPhone = async (email, phoneNumber) => {
     }
 
     return false;
-}
+};
 
+// pre() for the hashing and salting
 UserSchema.pre("save",function(next){
     const user = this;
 

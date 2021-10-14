@@ -29,7 +29,8 @@ zummy.get("/", (req,res) =>
     res.json({message : "Setup success Yay!!"}) 
 );
 
-zummy.listen(3000, () => 
-ConnectDB()
-.then(() => console.log("Serer is running 🤞😂"))
-.catch(() => console.log("MongoDB connection failed 😭😭")));
+zummy.listen(3001, () => 
+    ConnectDB()
+    .then(() => console.log("Serer is running 🤞😂"))
+    .catch(() => console.log("MongoDB connection failed 😭😭"))
+);

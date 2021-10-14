@@ -1,12 +1,12 @@
 import express from "express";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken"; 
+import jwt from "jsonwebtoken";
 
 // Initializing
 const Router = express.Router();
 
 //Models
-import { UserModel } from "../../database/allModels";
+import UserModel from "../../database/user/index";
 
 /*
 Route           /signup
@@ -20,8 +20,8 @@ Router.post("/signup", async (req,res)=> {
         const { email, password, fullname, phoneNumber} = req.body.credentials;
 
         // Check whether email or phone number exists
-        const checkUserByEmail = await UserModel.findOne({email});
-        const checkUserByPhone = await UserModel.findOne({phoneNumber});
+        const checkUserByEmail = await UserModel.findOne({email: email});
+        const checkUserByPhone = await UserModel.findOne({phoneNumber: phoneNumber});
 
         if(checkUserByEmail || checkUserByPhone){
             return res.json({ error: "User already Exists"});
@@ -33,7 +33,7 @@ Router.post("/signup", async (req,res)=> {
         const hashedPassword = await bcrypt.hash(password, bcryptSalt);
 
         //DB
-        await UserModel.create({...req.body.credentials, hashedPassword});
+        await UserModel.create({...req.body.credentials, password: hashedPassword});
 
         //JWT Auth Token
         const token = jwt.sign({user: {fullname, email}}, "ZomatoApp");

@@ -31,7 +31,7 @@ Method              GET
 Router.get("/:_id", async(req,res)=> {
     try{
         const {_id} = req.params;
-        const restaurant = await RestaurantModel.findOne({_id : _id});
+        const restaurant = await RestaurantModel.findOne(_id);
 
         if(!restaurant){
             return res.status(404).json({error: "Restaurant Not Found"});

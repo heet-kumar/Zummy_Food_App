@@ -66,6 +66,30 @@ Router.post("/signup", async (req,res)=> {
     }
 });
 
+/*
+Route           /signin
+Decription      Signin with email and Password
+Params          None
+Access          Public
+Method          POST
+*/
+Router.post("/signin", async (req,res)=> {
+    try{
+
+        // new method to find email or password exists
+        // also these findEmailAndPassword() is defined inside User Schema Database as static 
+        const user = await UserModel.findByEmailAndPassword(req.body.credentials);
+
+        //JWT Auth Token
+        const token = user.generateJwtTokens();
+
+        return res.status(200).json({Token : token, status: "Success"});  
+
+    }catch(error){
+        return res.status(500).json({Error: error.message});
+    }
+});
+
 export default Router;
 
 // hashing means encypting the password

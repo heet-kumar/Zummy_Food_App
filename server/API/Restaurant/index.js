@@ -1,4 +1,6 @@
 import { RestaurantModel } from "../../database/restaurant";
+import express from "express";
+import passport from "passport";
 
 const Router = express.Router();
 
@@ -29,7 +31,7 @@ Method              GET
 Router.get("/:_id", async(req,res)=> {
     try{
         const {_id} = req.params;
-        const restaurant = await RestaurantModel.findOne(_id);
+        const restaurant = await RestaurantModel.findOne({_id : _id});
 
         if(!restaurant){
             return res.status(404).json({error: "Restaurant Not Found"});

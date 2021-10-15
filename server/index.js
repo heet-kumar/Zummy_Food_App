@@ -12,6 +12,8 @@ import googleAuthConfig from "./config/google.config";
 
 //API
 import Auth from "./API/Auth";
+import Restaurant from "./API/Restaurant";
+import Food from "./API/Food";
 
 //Database connection
 import ConnectDB from "./database/connection";
@@ -33,6 +35,8 @@ googleAuthConfig(passport);
 // For application routes
 // localhost:3001/auth/signup
 zummy.use("/auth", Auth);
+zummy.use("/restaurant", Restaurant);
+zummy.use("/food", Food);
 
 zummy.get("/", (req,res) => 
     res.json({message : "Setup success Yay!!"}) 

@@ -24,6 +24,8 @@ zummy.use(express.json());
 zummy.use(express.urlencoded({extended: false}));
 zummy.use(cors());
 zummy.use(helmet());
+zummy.use(passport.initialize());  // with google OAuth
+zummy.use(passport.session());     // with google OAuth
 
 // passport configuration
 googleAuthConfig(passport);

@@ -16,6 +16,7 @@ import Restaurant from "./API/Restaurant";
 import Food from "./API/Food";
 import Menu from "./API/Menu";
 import Order from "./API/Orders";
+import Review from "./API/Reviews";
 //import Image from "./API/Image";
 
 //Database connection
@@ -42,6 +43,7 @@ zummy.use("/restaurant", Restaurant);
 zummy.use("/food", Food);
 zummy.use("/menu", Menu);
 zummy.use("/order", Order);
+zummy.use("/reviews", Review);
 //zummy.use("/image", Image);
 
 zummy.get("/", (req,res) => 

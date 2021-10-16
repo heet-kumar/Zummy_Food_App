@@ -9,6 +9,9 @@ const Router = express.Router();
 //Models
 import UserModel from "../../database/user/index";
 
+//Validation
+import {ValidateSignup,ValidateSignin} from "../../validation/auth";
+
 /*
 Route           /signup
 Decription      Signup with email and Password
@@ -18,6 +21,9 @@ Method          POST
 */
 Router.post("/signup", async (req,res)=> {
     try{
+        // validation
+        await ValidateSignup(req.body.credentials);
+
         //const { email, password, fullname, phoneNumber} = req.body.credentials;
 
         // Checking whether email or phone number exists
@@ -76,6 +82,8 @@ Method          POST
 */
 Router.post("/signin", async (req,res)=> {
     try{
+        //validation
+        await ValidateSignin(req.body.credentials);
 
         // new method to find email or password exists
         // also these findEmailAndPassword() is defined inside User Schema Database as static 

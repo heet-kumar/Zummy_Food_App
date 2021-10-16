@@ -1,59 +1,48 @@
-// // Libraries
-// import express from "express";
-// import AWS from "aws-sdk";
-// import multer from "multer";
+// Libraries
+import express from "express";
+import AWS from "aws-sdk";
+import multer from "multer";
 
-// // Database Model
-// import {ImageModel} from "../../database/allModels";
+// Database Model
+import {ImageModel} from "../../database/allModels";
 
-// const Router = express.Router();
+const Router = express.Router();
 
-// // Multer Config
-// const storage = multer.memoryStorage();
-// const upload = multer({storage});
+// Multer Config
+const storage = multer.memoryStorage();
+const upload = multer({storage});
 
-// // AWS S3 Bucket
-// const s3Bucket = new AWS.S3({
-//     accessKeyId: process.env.AWS_S3_ACCESS_KEY,
-//     secretAccessKey: process.env.AWS_S3_SECRET_KEY,
-//     region: "ap-south-1"
-// });
+// AWS S3 Bucket
+import {s3Upload} from "../../Utils/AWS/s3";
 
-// const S3Upload = (options) => {
-//     return new Promise((resolve, reject)=>
-//         s3Bucket.upload(options, (error,data)=> {
-//             if(error) return reject(error);
-//             return resolve(data);
-//         })
-//     );
-// };
-
-// const uploadImage = await S3Upload(bucketOptions);
-
-// /*
-// Route               /
-// Description         Uploaging given image to S3 bucket, and then saving the file to the mongoDB
-// Access              Public
-// Parameter           None
-// Method              POST
-// */
-// Router.post("/", async(req,res)=>{
-//     try{
-//         const file = req.file;
+/*
+Route               /
+Description         Uploaging given image to S3 bucket, and then saving the file to the mongoDB
+Access              Public
+Parameter           None
+Method              POST
+*/
+Router.post("/", upload.single("file") ,async(req,res)=>{
+    try{
+        const file = req.file;
         
-//         // S3 bucket options
-//         const bucketOptions = {
-//             Bucket: "bucket-name",
-//             Key: file.originalname,
-//             Body: file.buffer,
-//             ContentType: file.mimetype,
-//             ACL: "public-read"
-//         };
+        // S3 bucket options
+        const bucketOptions = {
+            Bucket: "bucket-name",
+            Key: file.originalname,
+            Body: file.buffer,
+            ContentType: file.mimetype,
+            ACL: "public-read"
+        };
 
-//     } catch(error){
-//         return res.status(500).json({error: error.message});
-//     }
-// }); 
+        const uploadImage = await s3Upload(bucketOptions);
+
+        return res.status(200).json({ uploadImage });
+
+    } catch(error){
+        return res.status(500).json({error: error.message});
+    }
+}); 
 
 
-// export default Router;
+export default Router;

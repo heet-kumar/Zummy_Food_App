@@ -5,10 +5,11 @@ require("dotenv").config();
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-//import passport from "passport";
+import passport from "passport";
 
 // configs
-//import googleAuthConfig from "./config/google.config";
+import googleAuthConfig from "./config/google.config";
+import routeConfig from "./config/route.config";
 
 //API
 import Auth from "./API/Auth";
@@ -31,11 +32,12 @@ zummy.use(express.json());
 zummy.use(express.urlencoded({extended: false}));
 zummy.use(cors());
 zummy.use(helmet());
-//zummy.use(passport.initialize());  // with google OAuth
-//zummy.use(passport.session());     // with google OAuth
+zummy.use(passport.initialize());  // with google OAuth
+zummy.use(passport.session());     // with google OAuth
 
 // passport configuration
-//googleAuthConfig(passport);
+googleAuthConfig(passport);
+routeConfig(passport);
 
 // For application routes
 // localhost:3001/auth/signup
